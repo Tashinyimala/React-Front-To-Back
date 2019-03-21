@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Custom Components
+import Contacts from './components/Contacts';
+import Header from './components/Header';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <p>App.js</p>
+        <Header branding="Contact Manager" />
+        <div className="container">
+          <Contacts />
+        </div>
       </div>
     );
   }
