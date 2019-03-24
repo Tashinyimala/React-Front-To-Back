@@ -10,6 +10,7 @@ import { Provider } from './context';
 import AddContact from './components/contacts/AddContact';
 import About from './components/pages/About';
 import NotFound from './components/pages/NotFound';
+import LifecycleTest from './components/lifecycleTest/LifecycleTest';
 class App extends Component {
   render() {
     return (
@@ -22,6 +23,7 @@ class App extends Component {
                 <Route exact path="/" component={Contacts} />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/contact/add" component={AddContact} />
+                <Route exact path="/test" component={LifecycleTest} />
                 <Route component={NotFound} />
               </Switch>
             </div>
