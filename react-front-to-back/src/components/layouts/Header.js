@@ -24,7 +24,7 @@ const Header = props => {
                 className="nav-link"
                 style={{ color: 'white' }}
               >
-                <i className="fas fa-plus" /> Add Contact
+                <i className="fas fa-plus" /> Add
               </Link>
             </li>
             <li>
