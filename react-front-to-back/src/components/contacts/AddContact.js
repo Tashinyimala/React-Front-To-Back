@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextInputGroup from '../layout/TextInputGroup';
+import uuid from 'uuid';
+
+import { connect } from 'react-redux';
+import { addContact } from '../../actions/contactActions';
 
 const emptyState = {
   name: '',
@@ -11,80 +16,84 @@ const emptyState = {
 class AddContact extends Component {
   state = emptyState;
 
-  onSubmit = e => {
-    e.preventDefault();
+  onChange = event =>
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+
+  onSubmit = event => {
+    event.preventDefault();
 
     const { name, email, phone } = this.state;
 
-    // Check For Errors
+    // Empty Form Input Validation
     if (name === '') {
-      this.setState({ errors: { name: 'Name is required' } });
+      this.setState({ error: { name: 'Name is required' } });
       return;
     }
-
     if (email === '') {
-      this.setState({ errors: { email: 'Email is required' } });
+      this.setState({ error: { email: 'Email is required' } });
       return;
     }
-
     if (phone === '') {
-      this.setState({ errors: { phone: 'Phone is required' } });
+      this.setState({ error: { phone: 'Phone number is required' } });
       return;
     }
 
     const newContact = {
+      id: uuid(),
       name,
       email,
       phone
     };
 
-    //// SUBMIT CONTACT ////
+    this.props.addContact(newContact);
 
     // Clear State
     this.setState(emptyState);
 
+    // Redirect to Home page
     this.props.history.push('/');
   };
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
-
   render() {
-    const { name, email, phone, errors } = this.state;
-
+    const { name, email, phone, error } = this.state;
     return (
       <div className="card mb-3">
-        <div className="card-header">Add Contact</div>
+        <div className="card-header" align="center">
+          Add Contact
+        </div>
         <div className="card-body">
           <form onSubmit={this.onSubmit}>
             <TextInputGroup
               label="Name"
               name="name"
-              placeholder="Enter Name"
               value={name}
+              placeholder="Enter Name..."
               onChange={this.onChange}
-              error={errors.name}
+              error={error.name}
             />
             <TextInputGroup
               label="Email"
               name="email"
-              type="email"
-              placeholder="Enter Email"
               value={email}
+              placeholder="Enter Email..."
+              type="email"
               onChange={this.onChange}
-              error={errors.email}
+              error={error.email}
             />
             <TextInputGroup
               label="Phone"
               name="phone"
-              placeholder="Enter Phone"
               value={phone}
+              placeholder="Enter Phone Number..."
               onChange={this.onChange}
-              error={errors.phone}
+              error={error.phone}
             />
             <input
               type="submit"
-              value="Add Contact"
-              className="btn btn-light btn-block"
+              value="Add"
+              className="btn btn-block btn-dark"
             />
           </form>
         </div>
@@ -93,4 +102,11 @@ class AddContact extends Component {
   }
 }
 
-export default AddContact;
+AddContact.propTypes = {
+  addContact: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { addContact }
+)(AddContact);
