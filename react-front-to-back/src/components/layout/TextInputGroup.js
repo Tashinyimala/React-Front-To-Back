@@ -29,7 +29,7 @@ const TextInputGroup = ({
   );
 };
 
-TextInputGroup.prototype = {
+TextInputGroup.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
