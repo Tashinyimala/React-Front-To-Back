@@ -10,7 +10,9 @@ const emptyState = {
   error: {}
 };
 
-class AddContact extends Component {
+const url = 'https://jsonplaceholder.typicode.com/users/';
+
+class EditContact extends Component {
   state = emptyState;
 
   onChange = event =>
@@ -18,10 +20,23 @@ class AddContact extends Component {
       [event.target.name]: event.target.value
     });
 
+  async componentDidMount() {
+    const { id } = this.props.match.params;
+    const response = await axios.get(`${url}${id}`);
+    const contact = response.data;
+
+    this.setState({
+      name: contact.name,
+      email: contact.email,
+      phone: contact.phone
+    });
+  }
+
   onSubmit = async (dispatch, event) => {
     event.preventDefault();
 
     const { name, email, phone } = this.state;
+    const { id } = this.props.match.params;
 
     // Empty Form Input Validation
     if (name === '') {
@@ -37,22 +52,14 @@ class AddContact extends Component {
       return;
     }
 
-    const newContact = {
+    const updatedContact = {
       name,
       email,
       phone
     };
 
-    const url = 'https://jsonplaceholder.typicode.com/users';
-    // axios
-    //   .post(url, newContact)
-    //   .then(response =>
-    //     dispatch({ type: 'ADD_CONTACT', payload: response.data })
-    //   );
-
-    // Using AsyncAwait
-    const response = await axios.post(url, newContact);
-    dispatch({ type: 'ADD_CONTACT', payload: response.data });
+    const response = await axios.put(`${url}/${id}`, updatedContact);
+    dispatch({ type: 'UPDATE_CONTACT', payload: response.data });
 
     // Clear State
     this.setState(emptyState);
@@ -72,7 +79,7 @@ class AddContact extends Component {
           return (
             <div className="card mb-3">
               <div className="card-header" align="center">
-                Add Contact
+                Update Contact
               </div>
               <div className="card-body">
                 <form onSubmit={this.onSubmit.bind(this, dispatch)}>
@@ -103,7 +110,7 @@ class AddContact extends Component {
                   />
                   <input
                     type="submit"
-                    value="Add"
+                    value="Update Contact"
                     className="btn btn-block btn-dark"
                   />
                 </form>
@@ -116,4 +123,4 @@ class AddContact extends Component {
   }
 }
 
-export default AddContact;
+export default EditContact;
