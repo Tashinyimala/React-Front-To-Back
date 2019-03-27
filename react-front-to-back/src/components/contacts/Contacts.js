@@ -28,9 +28,9 @@ Contacts.propTypes = {
   getContacts: PropTypes.func.isRequired
 };
 
-// Mapping Redux to local contacts component
+// Mapping Redux (Reducer) to local contacts component
 const mapStateToProps = state => ({
-  contacts: state.contact.contacts
+  contacts: state.contactReducer.contacts
 });
 
 // const mapDispathToProps = dispatch => ({
